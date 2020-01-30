@@ -6,8 +6,8 @@ import matplotlib
 matplotlib.use('TkAgg')
 
 
-probabilidad_mutar_por_individuo = 0.05
-numero_iteraciones = 1000
+probabilidad_mutar_por_individuo = 0.0005
+numero_iteraciones = 100
 POBLACION_SIZE = 100
 poblacion = []
 promedios = []
@@ -55,21 +55,19 @@ for _ in range(POBLACION_SIZE):
         individuo_temp, 0, 0))
     VALOR_INICIAL = 1000000
 
-generation = 0
-
 for _ in range(numero_iteraciones):
     children = []
     for padre in poblacion:
         parent_1 = poblacion[0]
-        parent_2 = poblacion[1]
+        parent_2 = poblacion[-1]
         value1 = parent_1.value[0:110] + parent_2.value[110:220]
         value2 = parent_2.value[0:110] + parent_1.value[110:220]
         azar = random.random()
-        if azar <= probabilidad_mutar_por_individuo:
-            value1 = individual.mutar(value1)
-        azar = random.random()
-        if azar <= probabilidad_mutar_por_individuo:
-            value2 = individual.mutar(value2)
+        # if azar <= probabilidad_mutar_por_individuo:
+        value1 = individual.mutar(value1)
+        # azar = random.random()
+        # if azar <= probabilidad_mutar_por_individuo:
+        value2 = individual.mutar(value2)
 
         children.append(individual.Individuo(value1, 0, 0))
         children.append(individual.Individuo(value2, 0, 0))
@@ -100,7 +98,7 @@ for _ in range(numero_iteraciones):
     promedios.append(promedio(sorted_ind))
     peores.append(sorted_ind[len(sorted_ind)-1].fitness)
 
-    poblacion = sorted_ind[0:20]
+    poblacion = sorted_ind[0:100]
 
 
 print(poblacion[0])
@@ -108,37 +106,43 @@ Z = [-0.00015576, -0.00011687, 0.00052016, 0.00084352, 0.00064934, -
      0.00015576, 0.00029955, 0.00117849, -0.00096882, 0.00011396, -
      0.00103149]
 variables = []
-posicion=0
+posicion = 0
 for i in range(0, 11):
     variables.append(int(poblacion[0].value[posicion:(posicion+20)], 2))
     posicion += 20
+print(sum(variables))
 for i in range(len(Z)):
     print(f'Y{i} = {variables[i]}')
+articulo=[512,528,5128,303104,278530,258,2048,401408,2048,4230,768 ]
+sumatoria = 0
 
+for i in range(len(Z)):
+    sumatoria += (Z[i]*articulo[i])
+# print(f'SUMATORIA: {sumatoria}')
+print(sumatoria)
+def dibujar():
+    # grafica = plt.plot()
+    # grafica[0].set_title('Comparación entre datos reales y encontrados')
+    # grafica[0].plot(x, y, color="red", label="Y reales")
+    # grafica[0].plot(x, ya, color="black", label="Y encontrados")
+    # grafica[0].legend(bbox_to_anchor=(1, 1), loc='center', borderaxespad=0.)
+    # grafica[0].grid()
+    #grafica.set_title('Evolución de fitness')
+    plt.plot(mejores, color="green", label="Mejor caso")
+    plt.plot(promedios, color="blue", label="Caso promedio")
+    plt.plot(peores, color="red", label="Peor caso")
+    #plt.legend(bbox_to_anchor=(1, 1), loc='center', borderaxespad=0.)
+    plt.grid()
+    #plt.set(xlabel='Generacion', ylabel='Fitness')
+    # data = [x, y, ya]
 
-def dibujar(x, y, ya):
-    fig, grafica = plt.subplots(2)
-    grafica[0].set_title('Comparación entre datos reales y encontrados')
-    grafica[0].plot(x, y, color="red", label="Y reales")
-    grafica[0].plot(x, ya, color="black", label="Y encontrados")
-    grafica[0].legend(bbox_to_anchor=(1, 1), loc='center', borderaxespad=0.)
-    grafica[0].grid()
-    grafica[1].set_title('Evolución de fitness')
-    grafica[1].plot(mejores, color="green", label="Mejor caso")
-    grafica[1].plot(promedios, color="blue", label="Caso promedio")
-    grafica[1].plot(peores, color="red", label="Peor caso")
-    grafica[1].legend(bbox_to_anchor=(1, 1), loc='center', borderaxespad=0.)
-    grafica[1].grid()
-    grafica[1].set(xlabel='Generacion', ylabel='Fitness')
-    data = [x, y, ya]
-
-    table = plt.table(cellText=data, loc='bottom', rowLabels=[
-                      'X', 'Yr', 'Ya'], bbox=[-0.14, -0.55, 1.25, .28])
-    table.auto_set_font_size(False)
-    plt.subplots_adjust(bottom=0.25)
+    # table = plt.table(cellText=data, loc='bottom', rowLabels=[
+    #                   'X', 'Yr', 'Ya'], bbox=[-0.14, -0.55, 1.25, .28])
+    # table.auto_set_font_size(False)
+    #plt.subplots_adjust(bottom=0.25)
     plt.show()
 
 
 if __name__ == "__main__":
     # dibujar(individual.valores_x, individual.valores_y, valores_y_poblacion[0])
-    pass
+   dibujar()
