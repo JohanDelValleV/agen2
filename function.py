@@ -8,7 +8,7 @@ matplotlib.use('TkAgg')
 
 probabilidad_mutar_por_individuo = 0.0005
 numero_iteraciones = 100
-POBLACION_SIZE = 100
+POBLACION_SIZE = 200
 poblacion = []
 promedios = []
 mejores = []
@@ -39,8 +39,6 @@ def promedio(poblacion):
     return sum(individuo.fitness for individuo in poblacion)/len(poblacion)
 
 
-individuo_temp = ''
-decremento = 10
 for _ in range(POBLACION_SIZE):
     individuo_temp = ''
     decremento = 10
@@ -49,24 +47,21 @@ for _ in range(POBLACION_SIZE):
         value = conv_binario(numero)
         decremento -= 1
         VALOR_INICIAL = VALOR_INICIAL - numero
-        print(VALOR_INICIAL)
         individuo_temp += value
-    poblacion.append(individual.Individuo(
-        individuo_temp, 0, 0))
+    poblacion.append(individual.Individuo(individuo_temp, 0, 0))
     VALOR_INICIAL = 1000000
-
+cont=0
 for _ in range(numero_iteraciones):
     children = []
-    for padre in poblacion:
+    for _ in range(1000):
         parent_1 = poblacion[0]
-        parent_2 = poblacion[-1]
+        if cont==0:
+            parent_1 = poblacion[random.randint(0,len(poblacion)-1)]
+            
+        parent_2 = poblacion[random.randint(0,len(poblacion)-1)]
         value1 = parent_1.value[0:110] + parent_2.value[110:220]
         value2 = parent_2.value[0:110] + parent_1.value[110:220]
-        azar = random.random()
-        # if azar <= probabilidad_mutar_por_individuo:
         value1 = individual.mutar(value1)
-        # azar = random.random()
-        # if azar <= probabilidad_mutar_por_individuo:
         value2 = individual.mutar(value2)
 
         children.append(individual.Individuo(value1, 0, 0))
@@ -82,9 +77,6 @@ for _ in range(numero_iteraciones):
         for i in range(0, 11):
             variables.append(int(individuo.value[posicion:(posicion+20)], 2))
             posicion += 20
-            # if variables[i] >= 0 and variables[i] <= VALOR_INICIAL:
-            #     individuo.fitness = individual.fitness(individuo.value)
-            #     mejor_poblacion.append(individuo)
 
         suma = sum(variables)
         if suma <= 1000000:
@@ -98,7 +90,8 @@ for _ in range(numero_iteraciones):
     promedios.append(promedio(sorted_ind))
     peores.append(sorted_ind[len(sorted_ind)-1].fitness)
 
-    poblacion = sorted_ind[0:100]
+    poblacion = sorted_ind[0:200]
+    cont=1
 
 
 print(poblacion[0])
@@ -118,31 +111,13 @@ sumatoria = 0
 
 for i in range(len(Z)):
     sumatoria += (Z[i]*articulo[i])
-# print(f'SUMATORIA: {sumatoria}')
 print(sumatoria)
 def dibujar():
-    # grafica = plt.plot()
-    # grafica[0].set_title('Comparación entre datos reales y encontrados')
-    # grafica[0].plot(x, y, color="red", label="Y reales")
-    # grafica[0].plot(x, ya, color="black", label="Y encontrados")
-    # grafica[0].legend(bbox_to_anchor=(1, 1), loc='center', borderaxespad=0.)
-    # grafica[0].grid()
-    #grafica.set_title('Evolución de fitness')
     plt.plot(mejores, color="green", label="Mejor caso")
     plt.plot(promedios, color="blue", label="Caso promedio")
     plt.plot(peores, color="red", label="Peor caso")
-    #plt.legend(bbox_to_anchor=(1, 1), loc='center', borderaxespad=0.)
     plt.grid()
-    #plt.set(xlabel='Generacion', ylabel='Fitness')
-    # data = [x, y, ya]
-
-    # table = plt.table(cellText=data, loc='bottom', rowLabels=[
-    #                   'X', 'Yr', 'Ya'], bbox=[-0.14, -0.55, 1.25, .28])
-    # table.auto_set_font_size(False)
-    #plt.subplots_adjust(bottom=0.25)
     plt.show()
 
-
 if __name__ == "__main__":
-    # dibujar(individual.valores_x, individual.valores_y, valores_y_poblacion[0])
    dibujar()
