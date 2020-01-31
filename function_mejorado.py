@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import individual
+import individuo_mejorado as individual
 import random
 import math
 import matplotlib
@@ -14,7 +14,8 @@ promedios = []
 mejores = []
 peores = []
 VALOR_INICIAL = 1000000
-SELECCION= 200
+SELECCION = 1000
+
 
 def conv_binario(dec):
     decode = []
@@ -98,16 +99,14 @@ print(poblacion[0])
 Z = [-0.00015576, -0.00011687, 0.00052016, 0.00084352, 0.00064934, -
      0.00015576, 0.00029955, 0.00117849, -0.00096882, 0.00011396, -
      0.00103149]
-total_inversion=0
+total_inversion = 0
 posicion = 0
 for i in range(1, 12):
-    y=int(poblacion[0].value[posicion:(posicion+20)], 2)
+    y = int(poblacion[0].value[posicion:(posicion+20)], 2)
     print(f'Y{i} = {y}')
-    total_inversion+=y
+    total_inversion += y
     posicion += 20
 print(f'Total inversion = {total_inversion}')
-    
-
 
 
 def dibujar():
