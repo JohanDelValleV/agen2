@@ -50,15 +50,15 @@ for _ in range(POBLACION_SIZE):
         individuo_temp += value
     poblacion.append(individual.Individuo(individuo_temp, 0, 0))
     VALOR_INICIAL = 1000000
-cont=0
+generacion0 = True
 for _ in range(numero_iteraciones):
     children = []
     for _ in range(1000):
         parent_1 = poblacion[0]
-        if cont==0:
-            parent_1 = poblacion[random.randint(0,len(poblacion)-1)]
-            
-        parent_2 = poblacion[random.randint(0,len(poblacion)-1)]
+        if generacion0:
+            parent_1 = poblacion[random.randint(0, len(poblacion)-1)]
+
+        parent_2 = poblacion[random.randint(0, len(poblacion)-1)]
         value1 = parent_1.value[0:110] + parent_2.value[110:220]
         value2 = parent_2.value[0:110] + parent_1.value[110:220]
         value1 = individual.mutar(value1)
@@ -91,7 +91,7 @@ for _ in range(numero_iteraciones):
     peores.append(sorted_ind[len(sorted_ind)-1].fitness)
 
     poblacion = sorted_ind[0:200]
-    cont=1
+    generacion0 = False
 
 
 print(poblacion[0])
@@ -106,18 +106,24 @@ for i in range(0, 11):
 print(sum(variables))
 for i in range(len(Z)):
     print(f'Y{i} = {variables[i]}')
-articulo=[512,528,5128,303104,278530,258,2048,401408,2048,4230,768 ]
+articulo = [512, 528, 5128, 303104, 278530, 258, 2048, 401408, 2048, 4230, 768]
 sumatoria = 0
 
 for i in range(len(Z)):
     sumatoria += (Z[i]*articulo[i])
 print(sumatoria)
+
+
 def dibujar():
+    plt.title("Evolución del fitness")
     plt.plot(mejores, color="green", label="Mejor caso")
+    plt.xlabel("Generaciones")
+    plt.ylabel("Fitness")
     plt.plot(promedios, color="blue", label="Caso promedio")
     plt.plot(peores, color="red", label="Peor caso")
-    plt.grid()
+    plt.legend()
     plt.show()
 
+
 if __name__ == "__main__":
-   dibujar()
+    dibujar()
