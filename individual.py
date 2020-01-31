@@ -1,7 +1,7 @@
 import random
 import math
 
-probabilidad_mutar_por_bit = 0.0005
+probabilidad_mutar_por_bit = 0.05
 
 Z = [-0.00015576, -0.00011687, 0.00052016, 0.00084352, 0.00064934, -
      0.00015576, 0.00029955, 0.00117849, -0.00096882, 0.00011396, -
@@ -9,13 +9,11 @@ Z = [-0.00015576, -0.00011687, 0.00052016, 0.00084352, 0.00064934, -
 
 
 class Individuo:
-    def __init__(self, value, fitness, probability):
+    def __init__(self, value, fitness):
         self.value = value
         self.fitness = fitness
-        self.probability = probability
-
     def __repr__(self):
-        return '{'+str(self.value)+','+str(self.fitness)+','+str(self.probability)+'}'
+        return '{'+str(self.value)+','+str(self.fitness)+'}'
 
 
 def mutar(individuo):

@@ -14,7 +14,7 @@ promedios = []
 mejores = []
 peores = []
 VALOR_INICIAL = 1000000
-
+SELECCION=1000
 
 def conv_binario(dec):
     decode = []
@@ -48,7 +48,7 @@ for _ in range(POBLACION_SIZE):
         decremento -= 1
         VALOR_INICIAL = VALOR_INICIAL - numero
         individuo_temp += value
-    poblacion.append(individual.Individuo(individuo_temp, 0, 0))
+    poblacion.append(individual.Individuo(individuo_temp, 0))
     VALOR_INICIAL = 1000000
 generacion0 = True
 for _ in range(numero_iteraciones):
@@ -64,8 +64,8 @@ for _ in range(numero_iteraciones):
         value1 = individual.mutar(value1)
         value2 = individual.mutar(value2)
 
-        children.append(individual.Individuo(value1, 0, 0))
-        children.append(individual.Individuo(value2, 0, 0))
+        children.append(individual.Individuo(value1, 0))
+        children.append(individual.Individuo(value2, 0))
 
     poblacion = poblacion+children
     mejor_poblacion = []
@@ -90,7 +90,7 @@ for _ in range(numero_iteraciones):
     promedios.append(promedio(sorted_ind))
     peores.append(sorted_ind[len(sorted_ind)-1].fitness)
 
-    poblacion = sorted_ind[0:200]
+    poblacion = sorted_ind[0:SELECCION]
     generacion0 = False
 
 
@@ -98,20 +98,16 @@ print(poblacion[0])
 Z = [-0.00015576, -0.00011687, 0.00052016, 0.00084352, 0.00064934, -
      0.00015576, 0.00029955, 0.00117849, -0.00096882, 0.00011396, -
      0.00103149]
-variables = []
+total_inversion=0
 posicion = 0
-for i in range(0, 11):
-    variables.append(int(poblacion[0].value[posicion:(posicion+20)], 2))
+for i in range(1, 12):
+    y=int(poblacion[0].value[posicion:(posicion+20)], 2)
+    print(f'Y{i} = {y}')
+    total_inversion+=y
     posicion += 20
-print(sum(variables))
-for i in range(len(Z)):
-    print(f'Y{i} = {variables[i]}')
-articulo = [512, 528, 5128, 303104, 278530, 258, 2048, 401408, 2048, 4230, 768]
-sumatoria = 0
+print(f'Total inversion = {total_inversion}')
+    
 
-for i in range(len(Z)):
-    sumatoria += (Z[i]*articulo[i])
-print(sumatoria)
 
 
 def dibujar():
