@@ -1,7 +1,7 @@
 import random
 import math
 
-probabilidad_mutar_por_bit = 0.05 #0.0005
+probabilidad_mutar_por_bit = 0.0005
 
 Z = [-0.00015576, -0.00011687, 0.00052016, 0.00084352, 0.00064934, -
      0.00015576, 0.00029955, 0.00117849, -0.00096882, 0.00011396, -
