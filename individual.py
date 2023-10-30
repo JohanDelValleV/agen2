@@ -1,5 +1,4 @@
 import random
-import math
 
 probabilidad_mutar_por_bit = 0.0005
 
