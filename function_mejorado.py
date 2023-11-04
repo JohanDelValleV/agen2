@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 from individuo_mejorado import Individual
 from population import generate_childrens, generate_population
-from utils import mutate, fitness, int_to_binary, population_average, generate_random_number
-from cons import POPULATION_SIZE, SELECTION, ITERATION_TIMES, CHILDREN_POPULATION_SIZE
+from utils import fitness, population_average
+from cons import POPULATION_SIZE, SELECTION, ITERATION_TIMES
 import matplotlib
 matplotlib.use('TkAgg')
 
@@ -11,14 +11,14 @@ probabilidad_mutar_por_individuo = 0.0005
 promedios = []
 mejores = []
 peores = []
-VALOR_INICIAL = 1000000
 
 population: list[Individual] = generate_population(size=POPULATION_SIZE)
 
 first_generation: bool = True
 
 for _ in range(ITERATION_TIMES):
-    childrens: list[Individual] = generate_childrens(population, first_generation)
+    childrens: list[Individual] = generate_childrens(
+        population, first_generation)
 
     population = population + childrens
     mejor_poblacion = []
