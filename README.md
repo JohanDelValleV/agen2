@@ -4,7 +4,6 @@ This Python code implements a Genetic Algorithm for optimizing investments in a 
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
-- [Usage](#usage)
 - [Description](#description)
 - [Results](#results)
 - [License](#license)
