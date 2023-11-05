@@ -2,18 +2,15 @@ import matplotlib.pyplot as plt
 from individuo_mejorado import Individual
 from population import generate_childrens, generate_population
 from utils import fitness, population_average
-from cons import POPULATION_SIZE, SELECTION, ITERATION_TIMES
+from cons import INITIAL_POPULATION_VALUE, POPULATION_SIZE, SELECTION, ITERATION_TIMES
 import matplotlib
 matplotlib.use('TkAgg')
 
 
-probabilidad_mutar_por_individuo = 0.0005
-promedios = []
-mejores = []
-peores = []
-
+average_population: list[float] = []
+best_population: list[float] = []
+worst_population: list[float] = []
 population: list[Individual] = generate_population(size=POPULATION_SIZE)
-
 first_generation: bool = True
 
 for _ in range(ITERATION_TIMES):
@@ -21,52 +18,52 @@ for _ in range(ITERATION_TIMES):
         population, first_generation)
 
     population = population + childrens
-    mejor_poblacion = []
+    local_population = []
 
-    for individuo in population:
-        variables = []
-        posicion = 0
+    for individual in population:
+        values = []
+        index = 0
 
-        for i in range(0, 11):
-            variables.append(int(individuo.value[posicion:(posicion+20)], 2))
-            posicion += 20
+        for _ in range(0, 11):
+            values.append(int(individual.value[index:(index+20)], 2))
+            index += 20
 
-        suma = sum(variables)
-        if suma <= 1000000 and 0 not in variables:
-            individuo.fitness = fitness(variables)
-            mejor_poblacion.append(individuo)
+        if sum(values) <= INITIAL_POPULATION_VALUE and 0 not in values:
+            individual.fitness = fitness(values)
+            local_population.append(individual)
 
-    sorted_ind = sorted(mejor_poblacion, key=lambda x: x.fitness, reverse=True)
+    sorted_population = sorted(
+        local_population, key=lambda x: x.fitness, reverse=True)
 
-    mejores.append(sorted_ind[0].fitness)
-    promedios.append(population_average(sorted_ind))
-    peores.append(sorted_ind[len(sorted_ind)-1].fitness)
+    best_population.append(sorted_population[0].fitness)
+    average_population.append(population_average(sorted_population))
+    worst_population.append(
+        sorted_population[len(sorted_population)-1].fitness)
 
-    poblacion = sorted_ind[0:SELECTION]
+    poblacion = sorted_population[0:SELECTION]
     first_generation = False
 
 
-print(poblacion[0])
-total_inversion = 0
-posicion = 0
+total_investment: int = 0
+index: int = 0
 for i in range(1, 12):
-    y = int(poblacion[0].value[posicion:(posicion+20)], 2)
+    y = int(poblacion[0].value[index:(index+20)], 2)
     print(f'Y{i} = {y}')
-    total_inversion += y
-    posicion += 20
-print(f'Total inversion = {total_inversion}')
+    total_investment += y
+    index += 20
+print(f'Total investment = {total_investment}')
 
 
-def dibujar():
-    plt.title("Evolución del fitness")
-    plt.plot(mejores, color="green", label="Mejor caso")
-    plt.xlabel("Generaciones")
+def draw_graphic():
+    plt.title("Fitness evolution")
+    plt.plot(best_population, color="green", label="Best population")
+    plt.xlabel("Generations")
     plt.ylabel("Fitness")
-    plt.plot(promedios, color="blue", label="Caso promedio")
-    plt.plot(peores, color="red", label="Peor caso")
+    plt.plot(average_population, color="blue", label="Average population")
+    plt.plot(worst_population, color="red", label="Worst population")
     plt.legend()
     plt.show()
 
 
 if __name__ == "__main__":
-    dibujar()
+    draw_graphic()
